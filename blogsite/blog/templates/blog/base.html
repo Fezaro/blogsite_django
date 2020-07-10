@@ -1,0 +1,36 @@
+{% load static %} <!--Tells django to load static templates provided by django(includes static files e.g css)-->
+
+<!DOCTYPE html>
+<html>
+<head >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Max's blog site">
+    <meta name="author" content="Max Dev">
+    <meta name="keywords" content="blog,blogsite,tech blog">
+    <title> {% block title %}{% endblock title %}</title>
+    <link href="{% static "css/blog.css" %}" rel="stylesheet">
+    <link href="{% static "css/w3.css" %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script+Swash+Caps&display=swap" rel="stylesheet">
+    <style>
+        .w3-tangerine {
+          font-family: 'Tangerine', cursive;
+          font-size: 3.75em;
+          font-weight: 900;
+        }
+
+        </style>
+</head>
+<body>
+    <div id="content" > 
+        {% block content %} <!--defines a block that is filled with content by Django-->
+        
+        {% endblock content %}
+    </div>
+    <div id="sidebar" class="w3-sidebar w3-sand" style="width:20%;  ">
+        <h2 class="w3-tangerine" style="text-shadow:1px 1px 0 #444">My blog </h2>
+            <p> This is my Blog. Who am I? <br>Not important...</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+
+<div class="w3-center w3-display-bottommiddle">
+<div class="pagination w3-bar w3-border w3-round">
+    {% if page.has_previous %}
+        <a href="?page=1" class="w3-bar-item w3-border-right w3-button">&laquo;</a>
+        
+        <a class="w3-button w3-border-right w3-bar-item " href="?page={{ page.previous_page_number }}" >&#10094;</a>
+    {% endif %}
+
+    {% for num in page.paginator.page_range %}
+        {% if page.number == num %}
+            <a class="w3-green w3-bar-item w3-button">{{ num }}</a>
+        {% elif num > page.number|add:'-3' and num < page.number|add:'3' %}
+            <a class="w3-bar-item w3-button w3-border-left w3-border-right" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page.has_next %}
+        <a class="w3-button w3-border-left w3-bar-item " href="?page={{ page.next_page_number }}">&#10095;</a>
+        <a class="w3-bar-item w3-button w3-border-left" href="?page={{ page.paginator.num_pages }}" >&raquo;</a>
+    {% endif %}
+</div>
+</div>
