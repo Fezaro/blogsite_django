@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from taggit.managers import TaggableManager
 # Create your models here.
 
 # Adding a model manager, there aare two ways:
@@ -28,8 +29,9 @@ class Post(models.Model):
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    updated_by = models.ForeignKey(User, null=True,on_delete=models.CASCADE, related_name='+')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
-
+    tags = TaggableManager()
     class meta:
         ordering = ('-publish',)
 
@@ -41,3 +43,25 @@ class Post(models.Model):
         """returns the url to accesss a detail record for this post"""
         return reverse("blog:post_detail", args=[self.publish.year, self.publish.month, self.publish.day, self.slug])
     
+class Comment(models.Model):
+    """
+    model representing comments on blog
+    """
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    # attribute allows us to name the attribute that we use for the relation from the
+    #  related object back to this one.
+    # Django will use the name of the model in lowercase, followed by _set to name the
+    # manager of the related object
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(auto_now=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True) # for manually deactivating inappropriate comments,
+
+    class Meta:
+        ordering =('created',)
+    
+    def __str__(self):
+        return f'Comment by {self.name} on {self.post}.'
+

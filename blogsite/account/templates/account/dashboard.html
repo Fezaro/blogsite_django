@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}
+    Dashboard
+{% endblock title %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    <p>Welcome to your dashboard.
+    <div class="w3-card">
+        <img src="{{ user.profile.photo.url }}" alt="Profile picture" height="200" width="200" >
+        <div class="w3-container w3-center">
+            <p><b>{{ user.username }}</b></p>
+        </div>
+    </div>
+
+    <a href="{% url "edit" %}">Edit Profile</a> or <a href="{% url "account:password_change" %}">change your password</a>.</p> 
+    <a class="w3-btn w3-flat-turquoise" href="{% url "blog:post_create" %}">New Post</a>
+{% endblock content %}

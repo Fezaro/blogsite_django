@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}
+          
+    {% endblock title %}</title>
+    <link rel="stylesheet" href="{% static "css/base.css" %}">
+    <link rel="stylesheet" href="{% static "css/w3.css" %}">
+</head>
+<body>
+    <div id="header">
+        <span class="logo">SocioNet</span>
+        {% if request.user.is_authenticated %}
+            <ul class="menu">
+                <li { % if section == "dashboard" %} class="selected" { % endif %}>
+                    <a href="{ % url "account:dashboard" %}">My Dashboard</a>
+                </li>
+                <li { % if section == "Blog" % } class="selected"{% endif % }>
+                    <a href="{% url "blog:post_list" %}">Blog </a>
+                </li> 
+                <li {% if section == "people" %} class="selected"{% endif %}>
+                    <a href="#"People></a>
+                </li>
+            </ul>
+        {% endif %}
+        <span class="user">
+            {% if request.user.is_authenticated %}
+                Hello {{ request.user.first_name }},
+                <a href="{% url "account:logout" %}">Logout</a>
+            {% else %}
+                <a href="{% url "account:login" %}">Log In</a>
+            {% endif %}
+        </span>
+    </div>
+    <!--Use django messages to notify users of actions -->
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+                <a href="#" class="close">x</a>
+            </li>
+        </ul>
+        {% endfor %}
+    {% endif %}
+    <div id="content">{% block content %}
+      
+    {% endblock content %}
+    </div>
+</body>
+
+</html>
