@@ -10,16 +10,7 @@ from taggit.models import Tag
 from .forms import EmailPostForm, CommentForm, PostCreateForm,PostUpdateForm
 from django.core.mail import send_mail
 from django.db.models import Count
-# # Create your views here.
-# class TagListView(ListView):
-#     queryset = Tag.objects.all()
-#     template_name = "/blog/templates/section.html"
-#     context_object_name = 'tag_list'
-
-def tag_list(request):
-    tag_list = get_list_or_404(Tag)
-    return render(request, '/section.html', {'tag_list' : tag_list})
-
+# Create your views here.
 
 def post_list(request, tag_slug=None):
     """ Creates a view displaying a list of all posts. """
@@ -29,11 +20,12 @@ def post_list(request, tag_slug=None):
    
 
     if tag_slug:
-        tag = get_object_or_404(Tag, slug=tag_slug)# get tag object given slug
+        tag = get_object_or_404(Tag, slug=tag_slug) # get tag object given slug
         object_list = object_list.filter(tags__in=[tag])
 
     paginator = Paginator(object_list, 2) # limits it to n posts per page
     page = request.GET.get('page') # current page number
+
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
@@ -49,6 +41,7 @@ def post_list(request, tag_slug=None):
 def post_detail(request, year, month, day, post):
     """ Creates a view to show details of a single post. """
     post = get_object_or_404(Post, slug=post, status='published', publish__year=year, publish__month=month, publish__day=day)
+    # posts_list = get_list_or_404(Post)
     
     # List of active comments for this post
     comments = post.comments.filter(active=True)

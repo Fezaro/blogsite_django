@@ -2,6 +2,7 @@ from django import template
 from ..models import Post
 from django.db.models import Count
 from django.utils.safestring import mark_safe
+from taggit.models import Tag
 from account.models import Profile
 import markdown
 
@@ -28,9 +29,9 @@ def show_latest_posts(count=3):
     """
     returns latest posts published
     """
-    profile = Profile.photo
+    # profile = Profile.photo
     latest_posts = Post.published.order_by('-publish')[:count]
-    return {'latest_posts': latest_posts, 'photo': profile }
+    return {'latest_posts': latest_posts }
 
 @register.simple_tag
 def get_most_commented_posts(count=5):
@@ -47,3 +48,8 @@ def markdown_format(text):
     return markdown converted text
     """
     return mark_safe(markdown.markdown(text, extensions=['pymdownx.emoji']))
+
+@register.inclusion_tag('blog/post/all_tags.html')
+def get_all_tags():
+    all_tags = Tag.objects.all()
+    return {'all_tags': all_tags }

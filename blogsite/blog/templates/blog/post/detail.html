@@ -1,4 +1,13 @@
 {% extends "blog/base.html" %}
+
+{% block header %}
+<section class="s-pageheader s-pageheader--home">
+    {% include "header.html" %}
+</section>
+{% endblock header %}
+
+{% block content %}
+  
 <section class="s-content s-content--narrow s-content--no-padding-bottom">
 
     <article class="row format-standard">
@@ -13,7 +22,7 @@
                     In
                     {% for tag in post.tags.all  %}
                         <a href="{% url 'blog:post_list_by_tag' tag.slug %}">{{ tag.name }}</a>
-                    {% if not forloop.last %}, {% endif %}
+                    
                     {% endfor %}
                 </li>
             </ul>
@@ -90,4 +99,88 @@
         </div> <!-- end s-content__main -->
         
     </article>
+
+    <!-- comments -->
+
+    <div class="comments-wrap">
+
+        <div id="comments" class="row">
+            <div class="col-full">
+                {% with comments.count as total_comments %}
+                  
+                <h3 class="h2">{{ total_comments}} comment{{ total_comments|pluralize }}</h3>
+
+                {% endwith %}
+
+
+                <!-- commentlist -->
+                <ol class="commentlist">
+                    {% for comment in comments  %}
+                    
+                        <li class="depth-1 comment">
+
+                            <div class="comment__avatar">
+                                <img width="50" height="50" class="avatar" src="images/avatars/user-01.jpg" alt="">
+                            </div>
+
+                            <div class="comment__content">
+
+                                <div class="comment__info">
+                                    <cite>{{ comment.name }} </cite>
+
+                                    <div class="comment__meta">
+                                        <time class="comment__time">{{ comment.created }}</time>
+                                        <a class="reply" href="#0">Reply</a>
+                                    </div>
+                                </div>
+
+                                <div class="comment__text">
+                                <p>{{ comment.body|linebreaks }}</p>
+                                </div>
+                            </div>
+                        </li> <!-- end comment level 1 -->
+                    {% empty %}
+                    <p>No comments yet.</p>
+                    {% endfor %}
+                    {% if new_comment %}
+                        <h2>Your comment has been added.</h2>
+                        <br>
+                        <br>
+                        
+                    {% else %}
+
+                        <h2>New comment</h2>
+                        
+                        <form action="." method="POST">
+                            {{ comment_form.as_p }}
+                            {% csrf_token %}
+                            <p><input type="submit" value="Add comment"></p>
+                        </form>
+                    {% endif %}
+
+                </ol>
+            </div>
+        </div>
+    </div>
 </section>
+{% endblock content %}
+
+{% block section %}
+<h3>Similar Posts</h3>
+<div class="block-1-2 block-m-full popular__posts">
+    {% for post in similar_posts %}
+        <article class="col-block popular__post">
+            <a href="#0" class="popular__thumb">
+                <img src="images/thumbs/small/wheel-150.jpg" alt="">
+            </a>
+            <h5><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h5>
+            <section class="popular__meta">
+                    <span class="popular__author"><span>By</span> <a href="#0">{{ post.author }}</a></span>
+                <span class="popular__date"><span>on</span> <time datetime="2017-12-19">{{ post.publish }}</time></span>
+            </section>
+        </article>
+    {% empty %}
+        <p>There are no similar posts yet.</p>
+    {% endfor %}
+</div>
+{% endblock section %}

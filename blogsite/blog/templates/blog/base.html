@@ -35,17 +35,66 @@
     
     </head>
 <body id="top">
+    {% block header %}
     <!-- pageheader
     ================================================== -->
     <section class="s-pageheader s-pageheader--home">
         {% include "header.html" %}
         {% show_latest_posts 3 %}
     </section> <!-- end s-pageheader -->
+
+    {% endblock header %}
+    
     {% block content %}
       
     {% endblock content %}
 
-    {% include "section.html" %}
+    
+    <!-- s-extra
+    ================================================== -->
+    <section class="s-extra">
+
+        <div class="row top">
+
+            <div class=" col-full col-eight md-six tab-full popular">
+                <!-- popular posts  -->
+                {% block section %}
+
+                    {% include "section.html" %}
+
+                {% endblock section %}
+                <div class="col-full col-four md-six tab-full about">
+                    <h3>About Philosophy</h3>
+            
+                    <p>
+                    Donec sollicitudin molestie malesuada. Nulla quis lorem ut libero malesuada feugiat. Pellentesque in ipsum id orci porta dapibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada.
+                    </p>
+            
+                    <ul class="about__social">
+                        <li>
+                            <a href="#0"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a href="#0"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a href="#0"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a href="#0"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                        </li>
+                    </ul> <!-- end header__social -->
+                </div> <!-- end about -->
+            </div>
+        </div> <!--end row -->
+
+        <!-- tags section  -->
+        {% get_all_tags %}
+
+        
+    </section>
+        
+    
     {% include "footer.html" %}
     {% include "scripts.html" %}
 
