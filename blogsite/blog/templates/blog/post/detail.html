@@ -52,13 +52,22 @@
                     <a href="{% url 'blog:post_list_by_tag' tag.slug %}">{{ tag.name }}</a>
                     
                     {% endfor %}
-                </span>
+                
 
             </p> <!-- end s-content__tags -->
+            {% if user.is_authenticated %}
+                  
+                    </span>
+                    <div class="col-four">
+                    <span>
+                        <a class="btn btn--primary" href="{% url 'blog:post_update' post.pk %}">Update Post</a>
+                    </span>
+                    </div>
+                {% endif %}
 
             <!-- Author section  -->
             <div class="s-content__author">
-                <img src="images/avatars/user-03.jpg" alt="">
+                <img src="/static/images/avatars/user-03.jpg" alt="">
 
                 <div class="s-content__author-about">
                     <h4 class="s-content__author-name">
@@ -152,8 +161,8 @@
                         <h2>New comment</h2>
                         
                         <form action="." method="POST">
-                            {{ comment_form.as_p }}
                             {% csrf_token %}
+                            {{ comment_form.as_p }}
                             <p><input type="submit" value="Add comment"></p>
                         </form>
                     {% endif %}

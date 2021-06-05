@@ -1,0 +1,18 @@
+{% extends "blog/post/detail.html" %}
+
+{% block content %}
+<section class="s-content s-content--narrow s-content--no-padding-bottom">
+
+    <article class="row format-standard">
+        <h2>Update post</h2>
+        <p>Some changes no prob..</p>
+
+        <form action="." method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <p><input type="submit" value="Update Post"></p>
+        </form>
+    </article>
+</section>
+{% endblock content %}

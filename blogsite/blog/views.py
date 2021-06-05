@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404,get_list_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib  import messages
 from django.views.generic.edit import CreateView,UpdateView
 from django.views.generic.list import ListView
+from django.views.generic.dates import YearArchiveView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from .models import Post, Comment
@@ -58,6 +60,11 @@ def post_detail(request, year, month, day, post):
             new_comment.post = post
             # Save the comment to the database
             new_comment.save()
+            
+            messages.success(request, "Comment added.")
+        else:
+            messages.error(request,"Error posting comment.")
+
     else:
         comment_form = CommentForm()
     
@@ -115,7 +122,7 @@ def post_share(request, post_id):
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    template_name = 'blog/post/post-create.html'
+    template_name = 'blog/post/post_create.html'
     form_class = PostCreateForm
     success_url = reverse_lazy('post_list')
 
@@ -140,4 +147,12 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
         post.updated_by = self.request.user.get_username() # set user who updated form
         post.save()
         return super().form_valid(form)
+
+class PostYearArchiveView(YearArchiveView):
+    queryset = Post.objects.all()
+    date_field = "publish"
+    make_object_list = True
+    allow_future = True
+    template_name = "blog/base.html"
+
 

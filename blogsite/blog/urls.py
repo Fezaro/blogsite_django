@@ -13,6 +13,7 @@ urlpatterns = [
     path('feed/', LatestPostsFeed(), name='post_feed'),
     path('<int:pk>/update/', views.PostUpdateView.as_view(), name='post_update'),
     path('create/', views.PostCreateView.as_view(), name='post_create'),
+    path('<int:year>/',views.PostYearArchiveView.as_view(), name="post_year_archive"),
 ]
 
 # < > are used to capture values from the url . path converters are used to define the url patterns 
